@@ -1,7 +1,9 @@
 package es.sarman.blog.config;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,11 @@ public class JWTUtils {
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date().toInstant().plus(Duration.ofDays(tokenConfigProperties.getExpiration())))
                 .sign(algorithm);
+    }
+
+    public DecodedJWT verify (String token) {
+        JWTVerifier verifier = JWT.require(algorithm).withIssuer(tokenConfigProperties.getIssuer()).build();
+        return verifier.verify(token);
     }
 
 }
