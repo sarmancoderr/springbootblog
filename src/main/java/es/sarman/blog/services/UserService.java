@@ -1,6 +1,8 @@
 package es.sarman.blog.services;
 
 import es.sarman.blog.entities.UserEntity;
+import es.sarman.blog.exceptions.ExistingUserException;
+import es.sarman.blog.exceptions.UserNotFoundException;
 import es.sarman.blog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +25,7 @@ public class UserService {
         userRepository.findByUsername(userEntity.getUsername()).ifPresent(new Consumer<UserEntity>() {
             @Override
             public void accept(UserEntity userEntity) {
-                throw new RuntimeException("El usuario existe");
+                throw new ExistingUserException();
             }
         });
 
@@ -34,6 +36,10 @@ public class UserService {
 
     public List<UserEntity> listUsers() {
         return userRepository.findAll();
+    }
+
+    public UserEntity findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
 }

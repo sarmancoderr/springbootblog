@@ -40,7 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Comprobar que el token sea válido
-        DecodedJWT decodedJWT = jwtUtils.verify(authorization.replace("Bearer ", ""));
+        DecodedJWT decodedJWT = jwtUtils.verify(authorization);
 
         // Autenticar el usuario
         String username = decodedJWT.getSubject();

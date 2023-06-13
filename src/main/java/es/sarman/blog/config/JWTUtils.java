@@ -32,7 +32,7 @@ public class JWTUtils {
 
     public DecodedJWT verify (String token) {
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(tokenConfigProperties.getIssuer()).build();
-        return verifier.verify(token);
+        return verifier.verify(token.replace("Bearer ", ""));
     }
 
 }
